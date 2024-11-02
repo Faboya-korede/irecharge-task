@@ -23,7 +23,7 @@ provider "aws" {
 
 module "vpc" {
   source       = "./modules/vpc"
-  subnet_count = 1
+  subnet_count = 2
   vpc_name     = "main"
   cidr_block   = "10.32.0.0/16"
 }
@@ -48,7 +48,7 @@ module "lb" {
 module "ecs" {
   source             = "./modules/ecs_cluster"
   lb_arn             = module.lb.lb_arn
-  app_count          = 2
+  app_count          = 1
   task-definition-sg = [module.sg.task-sg]
   target_group_arn   = module.lb.target_group_arn
   cpu                = 256
