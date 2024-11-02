@@ -67,8 +67,8 @@ jobs:
 
       - name: Terraform Init
         run: terraform init
-        working-directory: Terraform/  
+        working-directory: terraform/  
 
       - name: Terraform Plan
         run: terraform plan -input=false
-        working-directory: Terraform/  
+        working-directory: terraform/  
