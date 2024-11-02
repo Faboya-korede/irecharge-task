@@ -46,6 +46,7 @@ jobs:
 
 
   PUSH-IMAGE:
+    needs: terraform
     runs-on: ubuntu-latest
 
     steps:
