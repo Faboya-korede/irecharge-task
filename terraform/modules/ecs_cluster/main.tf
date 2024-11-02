@@ -36,7 +36,7 @@ resource "aws_ecs_task_definition" "api-td" {
   container_definitions = jsonencode([
     {
       "name" = "api",
-      "image" = "public.ecr.aws/a4q2x9o0/irecharge:latest",
+      "image" = "730335329790.dkr.ecr.us-east-1.amazonaws.com/irecharge:latest",
       "cpu" = 0,
       "essential" = true,
       "portMappings" = [
