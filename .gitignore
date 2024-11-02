@@ -7,3 +7,4 @@
 *.tfstate.lock.info
 *.terraform.lock.hcl
 *.terraform.tfstate
+node-project/node_modules/
