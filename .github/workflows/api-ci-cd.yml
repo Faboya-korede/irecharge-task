@@ -15,7 +15,7 @@ permissions:
   contents: read  # This is required for actions/checkout   
 
 jobs:
-  PUSH-IMAGE:
+  BUILD-IMAGE-AND-DEPLOY-TO-ECS:
     runs-on: ubuntu-latest
 
     steps:

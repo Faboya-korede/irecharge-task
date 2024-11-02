@@ -29,6 +29,13 @@ resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-s3-policy-att
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
+# Attach CloudWatch Logs Full Access policy
+resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_cloudwatch_policy" {
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+}
+
+
 # Create an ECS task fonu api
 resource "aws_ecs_task_definition" "api-td" {
   family = "api"
