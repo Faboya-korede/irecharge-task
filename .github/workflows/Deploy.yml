@@ -46,9 +46,7 @@ jobs:
 
   terraform:
     needs: PUSH-IMAGE
-    name: Terraform
     runs-on: ubuntu-latest
-    environment: production
 
     defaults:
       run:
