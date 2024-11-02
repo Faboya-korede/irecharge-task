@@ -17,3 +17,7 @@ variable "target_group_name" {
 variable "lb_sg" {
   type = list(string)
 }
+
+variable "domain" {
+  type = string
+}

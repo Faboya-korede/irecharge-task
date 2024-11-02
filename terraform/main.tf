@@ -42,6 +42,7 @@ module "lb" {
   public_subnet_ids = module.vpc.public_subnet_ids
   lb_name           = "api-lb"
   target_group_name = "api-tg"
+  domain            = "korede.tech"
   lb_sg             = [module.sg.lb_sg]
 }
 

@@ -22,10 +22,20 @@ resource "aws_lb_target_group" "tg" {
 
 }
 
+data "aws_acm_certificate" "domain" {
+  domain = var.domain 
+  most_recent = true           
+  statuses = ["ISSUED"]        
+}
+
+
 resource "aws_lb_listener" "http_listener" {
   load_balancer_arn = aws_lb.lb.id
-  port              = "80"
-  protocol          = "HTTP"
+  port              = "443"
+  protocol          = "HTTPS"
+
+  certificate_arn = data.aws_acm_certificate.domain.arn
+
 
   default_action {
     target_group_arn = aws_lb_target_group.tg.id
