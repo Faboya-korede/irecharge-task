@@ -18,6 +18,7 @@ permissions:
 
 jobs:
   terraform:
+    if: contains(github.event.head_commit.message, 'terraform') || github.event_name == 'push' && startsWith(github.event.head_commit.modified, 'terraform/')
     runs-on: ubuntu-latest
 
     defaults:
@@ -48,6 +49,7 @@ jobs:
         working-directory: terraform/
 
   build_and_deploy:
+    if: contains(github.event.head_commit.message, 'node-project') || github.event_name == 'push' && startsWith(github.event.head_commit.modified, 'node-project/')
     runs-on: ubuntu-latest
     needs: terraform # This ensures this job runs after the terraform job completes
 
