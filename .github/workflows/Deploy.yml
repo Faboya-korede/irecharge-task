@@ -27,9 +27,12 @@ jobs:
          role-session-name: GitHub_to_AWS_via_FederatedOIDC
          aws-region: ${{ secrets.AWS_REGION}} 
 
-    - name: Login to Amazon ECR
+    - name: Login to Amazon ECR Public
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+      with:
+        registry: public.ecr.aws
+       
 
     - name: Build, tag, and push image to Aws ECR
       working-directory: node-project
