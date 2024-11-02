@@ -3,14 +3,8 @@ name: CI/CD Workflow
 on:
   push:
     branches: [ "main" ]
-    paths:
-      - 'terraform/**'
-      - 'node-project/**'
   pull_request:
     branches: [ "main" ]
-    paths:
-      - 'terraform/**'
-      - 'node-project/**'
   
 permissions:
   id-token: write # This is required for requesting the JWT
@@ -18,7 +12,6 @@ permissions:
 
 jobs:
   terraform:
-    if: contains(github.event.head_commit.message, 'terraform') || github.event_name == 'push' && startsWith(github.event.head_commit.modified, 'terraform/')
     runs-on: ubuntu-latest
 
     defaults:
@@ -49,9 +42,8 @@ jobs:
         working-directory: terraform/
 
   build_and_deploy:
-    if: contains(github.event.head_commit.message, 'node-project') || github.event_name == 'push' && startsWith(github.event.head_commit.modified, 'node-project/')
     runs-on: ubuntu-latest
-    #needs: terraform # This ensures this job runs after the terraform job completes
+    needs: terraform 
 
     steps:
       - name: Checkout 
