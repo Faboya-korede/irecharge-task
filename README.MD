@@ -8,7 +8,7 @@ The goal of this Task was to create and deploy a simple API to Amazon Web Servic
 
 - `terraform/`: Contains all Terraform configurations for setting up AWS ECS Cluster 
 - `node-project/`: Contains the source code for the API and Dockerfile.
-- `.github/workflows/`: Contains GitHub Actions workflows for CI/CD.
+- `.github/workflows/`: Contains GitHub Actions workflows for CI/CD, including the ECS task definition JSON file used for deployment.
 - `README.md`: This file with setup and usage instructions.
 
 ## Prerequisites
@@ -16,7 +16,7 @@ The goal of this Task was to create and deploy a simple API to Amazon Web Servic
 Before running the setup, ensure you have the following installed:
 - [Docker](https://docs.docker.com/get-docker/)
 - [Terraform](https://www.terraform.io/downloads)
-- [AWS CLI](https://aws.amazon.com/cli/) (Command Line Interface)
+- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) (Command Line Interface)
 
 
 ## Setup Instructions
@@ -49,8 +49,8 @@ Before running the setup, ensure you have the following installed:
 ### 2. Clone the Repository
 
 ```bash
-git clone https://github.com/Faboya-korede/Shortlet-task.git
-cd shortlet-task
+git clone https://github.com/Faboya-korede/irecharge-task.git
+cd irecharge-task
 ```
 
 
@@ -62,32 +62,41 @@ cd shortlet-task
 cd node-project
 docker build -t api .
 ```
+
+- **If you don’t want to use ECR, you can deploy to any container registry of your choice.**
+
 - For Amazon ECR, first log in to your ECR repository
 
 ```bash
-aws ecr get-login-password --region YOUR_REGION | docker login --username AWS --password-stdin YOUR_ACCOUNT_ID.dkr.ecr.YOUR_REGION.amazonaws.com
+aws ecr get-login-password --region $YOUR_REGION | docker login --username AWS --password-stdin $YOUR_ACCOUNT_ID.dkr.ecr.$YOUR_REGION.amazonaws.com
+```
+
+- Create ECR Repo 
+
+```bash
+aws ecr create-repository --repository-name $YOUR_REPO_NAME --region $YOUR_REGION
 ```
 
 - Then tag and push the image
 
 ```bash
-docker tag api:latest YOUR_ACCOUNT_ID.dkr.ecr.YOUR_REGION.amazonaws.com/api:latest
-docker push YOUR_ACCOUNT_ID.dkr.ecr.YOUR_REGION.amazonaws.com/api:latest
+docker tag api:latest $YOUR_ACCOUNT_ID.dkr.ecr.$YOUR_REGION.amazonaws.com/$REPO_NAME:latest
+docker push $YOUR_ACCOUNT_ID.dkr.ecr.$YOUR_REGION.amazonaws.com/$REPO_NAME:latest
 ```
 
-### 4. Initialize Terraform
+- **After this step, update the image URI in the Terraform module for ECS to point to your own ECR image before proceeding with the Terrafrom deployment.**
+
+
+### 4. Set Up S3 Bucket and DynamoDB
+
+- Set up an S3 bucket to store your Terraform state file and use DynamoDB for state locking to prevent multiple users from making changes at the same time.
+
+
+### 5. Initialize Terraform
 - Navigate to the Terraform directory:
 
 ```bash
-cd ../terraform
-```
-
-- Create cred.tfvars File
-
-```bash
-project_id       = "YOUR_PROJECT_ID"
-region           = "YOUR_REGION"
-cluster_location = "YOUR_CLUSTER_LOCATION" #us-eas1-b"
+cd terraform
 ```
 
 - Initialize Terraform
@@ -96,17 +105,17 @@ cluster_location = "YOUR_CLUSTER_LOCATION" #us-eas1-b"
 terraform init
 ```
 
-### 5. Apply Terraform Configuration
+### 6. Apply Terraform Configuration
 
 - Apply the Terraform configuration to create the infrastructure and deploy the API:
 
 ```bash
-terraform apply -var-file=cred.tfvars
+terraform apply -auto-approve
 ```
 
-### 6. Update DNS Record
+### 7. Update DNS Record
 
-### Get the External IP of the Load Balancer
+### Get the External DNS of the Load Balancer
 
 1. **Go to the AWS Management Console:**
 
