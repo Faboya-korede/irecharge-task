@@ -20,7 +20,7 @@ app.use(logging);
 
 app.get('/', (req, res) => {
     const currentTime = new Date().toISOString(); // UTC format
-    res.status(200).send({ msg: ` Hello this the time, timestamp: ${currentTime}`});
+    res.status(200).send({ msg: `timestamp: ${currentTime}`});
 });
 
 app.get('/api/user', query("filter").isString().notEmpty(), (req, res) =>{
